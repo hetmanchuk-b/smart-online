@@ -21,7 +21,7 @@ export const GameTeamMember = ({member, side}: GameTeamMemberProps) => {
         className="w-28 h-28"
       />
       <p
-        title={member?.user?.username}
+        title={member?.user?.username || ''}
         className="text-lg font-semibold tracking-tighter text-center w-auto max-w-[200px] truncate"
       >
         {member?.user?.username}

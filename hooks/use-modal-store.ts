@@ -19,11 +19,12 @@ interface ModalData {
   quiz?: Quiz;
   apiUrl?: string;
   query?: Record<string, any>;
+  username?: string;
 }
 
 interface ModalStore {
   type: ModalType | null;
-  data: ModalData;
+  data: ModalData | null | undefined;
   isOpen: boolean;
   onOpen: (type: ModalType, data?: ModalData) => void;
   onClose: () => void;

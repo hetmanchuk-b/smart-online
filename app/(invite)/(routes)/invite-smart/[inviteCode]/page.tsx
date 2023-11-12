@@ -29,7 +29,7 @@ const InviteCodePage = async ({params}: InviteCodePageProps) => {
       inviteCode: params.inviteCode,
       members: {
         some: {
-          userId: session.user?.id
+          userId: session.user.id
         }
       }
     }
@@ -48,7 +48,7 @@ const InviteCodePage = async ({params}: InviteCodePageProps) => {
         create: [
           {
             role: MemberRole.GUEST,
-            userId: session.user?.id
+            userId: session.user.id
           }
         ]
       }

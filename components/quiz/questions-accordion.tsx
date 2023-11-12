@@ -47,7 +47,7 @@ export const QuestionsAccordion = (
           </AccordionTrigger>
           <AccordionContent>
             <div className="flex flex-col gap-y-1">
-              {question?.imageUrl?.length > 0 && (
+              {question?.imageUrl && question?.imageUrl?.length > 0 && (
                 <Image
                   src={question.imageUrl}
                   width={300}

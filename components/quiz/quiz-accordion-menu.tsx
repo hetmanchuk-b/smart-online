@@ -14,6 +14,7 @@ import {toast} from "sonner";
 import axios from "axios";
 import qs from "query-string";
 import {useRouter} from "next/navigation";
+import {isAxiosError} from "@/lib/utils";
 
 interface QuizAccordionMenuProps {
   quizId: string;
@@ -38,7 +39,11 @@ export const QuizAccordionMenu = ({quizId, questionId}: QuizAccordionMenuProps) 
       router.refresh();
     } catch (error) {
       console.log("[DELETE QUESTION CLIENT_ERROR]", error);
-      toast.error(`Something went wrong: ${error?.response?.data}`);
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setIsLoading(false)
     }

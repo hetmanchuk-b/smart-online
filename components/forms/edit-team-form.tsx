@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
+import {isAxiosError} from "@/lib/utils";
 
 interface EditTeamFormProps {
   teamId: string;
@@ -49,7 +50,11 @@ export const EditTeamForm = ({teamId, name, score}: EditTeamFormProps) => {
       router.refresh();
     } catch (error) {
       console.log("[EDIT TEAM CLIENT_ERROR]", error);
-      toast.error(`Something went wrong: ${error?.response?.data}`);
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error(`Something went wrong.`);
+      }
     }
   }
 

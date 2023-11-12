@@ -16,6 +16,7 @@ import {Button} from "@/components/ui/button";
 import {Icons} from '@/components/icons';
 import {useRouter} from "next/navigation";
 import {Quiz} from '@prisma/client';
+import {isAxiosError} from "@/lib/utils";
 
 export const DeleteQuizModal = () => {
   const {isOpen, onClose, type, data} = useModal();
@@ -35,7 +36,11 @@ export const DeleteQuizModal = () => {
       router.refresh();
     } catch (error) {
       console.log("[DELETE QUIZ CLIENT_ERROR]", error);
-      toast.error(`Something went wrong: ${error?.response?.data}`);
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setIsLoading(false)
     }

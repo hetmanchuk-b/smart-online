@@ -1,6 +1,5 @@
 "use client"
 
-import {useState} from "react";
 import {Member, MemberRole} from '@prisma/client';
 import {MemberWithUser} from "@/types/main";
 import {UserAvatar} from "@/components/user-avatar";

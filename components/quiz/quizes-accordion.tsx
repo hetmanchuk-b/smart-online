@@ -1,6 +1,6 @@
 "use client"
 
-import {Quiz, Question, Answer} from '@prisma/client';
+import {Quiz, Question, Answer, User} from '@prisma/client';
 import {
   Accordion,
   AccordionContent,
@@ -14,14 +14,13 @@ import {ActionTooltip} from "@/components/action-tooltip";
 import {QuestionsAccordion} from "@/components/quiz/questions-accordion";
 import {QuizMenu} from "@/components/quiz/quiz-menu";
 import Link from "next/link";
-import {User} from "next-auth";
 
 interface QuizesAccordionProps {
   quizes?: (Quiz & {
-    creator: User;
     questions: (Question & {
       variants: Answer[];
     })[];
+    creator: User | null;
   })[];
 }
 

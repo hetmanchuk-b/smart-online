@@ -4,7 +4,7 @@ import {buttonVariants} from "@/components/ui/button";
 import {Icons} from '@/components/icons'
 import {SignIn} from "@/components/sign-in";
 
-export const SignInPage = () => {
+const SignInPage = () => {
   return (
     <div className="absolute inset-0">
       <div className="h-full max-w-2xl mx-auto w-full flex flex-col items-center justify-center">

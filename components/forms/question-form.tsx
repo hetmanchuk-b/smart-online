@@ -29,7 +29,7 @@ import {ActionTooltip} from "@/components/action-tooltip";
 import {Textarea} from "@/components/ui/textarea";
 import {toast} from "sonner";
 import {QUIZ_MAX_QUESTION_VARIANTS} from "@/lib/const";
-import {cn} from "@/lib/utils";
+import {cn, isAxiosError} from "@/lib/utils";
 import axios from "axios";
 import qs from "query-string";
 import {useRouter} from "next/navigation";
@@ -94,14 +94,17 @@ export const QuestionForm = (
       setIsSaved(true);
     } catch (error) {
       console.log("[QUESTION FORM CLIENT_ERROR]", error);
-      toast.error(`Something went wrong: ${error?.response?.data}`);
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error(`Something went wrong.`);
+      }
       setIsSaved(false);
     }
   }
 
   const onAddOption = () => {
     if (isSaved || form.getValues('variants').length >= QUIZ_MAX_QUESTION_VARIANTS) return;
-    // @ts-expect-error
     form.setValue('variants', [...form.getValues('variants'), {
       text: '',
       type: AnswerType.WRONG
@@ -112,7 +115,6 @@ export const QuestionForm = (
     const options = form.getValues('variants');
     if (isSaved || options.length <= 1) return;
     options.splice(id, 1);
-    // @ts-expect-error
     form.setValue('variants', options);
     if (options.length > 1) {
       form.setValue('type', QuestionType.FAST)
@@ -205,7 +207,6 @@ export const QuestionForm = (
                   <FormControl>
                     <FileUpload
                       disabled={isSubmitting || isSaved}
-                      endpoint="questionImage"
                       value={field.value}
                       onChange={field.onChange}
                     />

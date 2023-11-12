@@ -37,7 +37,7 @@ export const RoomSidebarMenu = ({room, role}: RoomSidebarMenuProps) => {
             secondaryFont.className
           )}
         >
-          <span className="w-[195px] truncate">{room.title}</span>
+          <span className="w-[195px] truncate">{room?.title}</span>
           <Icons.menu className="w-5 h-5 ml-auto" />
         </button>
       </DropdownMenuTrigger>

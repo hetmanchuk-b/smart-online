@@ -30,7 +30,7 @@ import axios from "axios";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
 import {buttonVariants} from "@/components/ui/button";
-import {cn} from "@/lib/utils";
+import {cn, isAxiosError} from "@/lib/utils";
 import {roleIconMap} from "@/lib/role-icons";
 
 export const MembersModal = () => {
@@ -62,7 +62,11 @@ export const MembersModal = () => {
 
     } catch (error) {
       console.log("[TEAM CHANGE CLIENT_ERROR]", error);
-      toast.error(`Something went wrong: ${error?.response?.data}`);
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setLoadingId('');
     }
@@ -85,7 +89,11 @@ export const MembersModal = () => {
 
     } catch (error) {
       console.log("[ROLE CHANGE_ERROR]", error);
-      toast.error(`Something went wrong: ${error?.response?.data}`)
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setLoadingId('')
     }
@@ -107,7 +115,11 @@ export const MembersModal = () => {
 
     } catch (error) {
       console.log("[KICK MEMBER_ERROR]", error);
-      toast.error(`Something went wrong: ${error?.response?.data}`)
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setLoadingId('');
     }
@@ -133,10 +145,10 @@ export const MembersModal = () => {
               key={member.id}
               className="flex items-center gap-x-2 mb-4"
             >
-              <MemberAvatar src={member.user.image} />
+              <MemberAvatar src={member?.user?.image ?? undefined} />
               <div className="flex flex-col gap-y-1">
                 <div className="text-xs font-semibold flex items-center gap-2">
-                  {member.user.username}
+                  {member?.user?.username}
                   <ActionTooltip
                     label={member.role}
                     side={'bottom'}
@@ -166,26 +178,30 @@ export const MembersModal = () => {
                             </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                               <DropdownMenuSubContent>
-                                <DropdownMenuItem
-                                  className='gap-x-1 font-semibold'
-                                  onClick={() => onTeamChange(member.id, topTeam?.id)}
-                                >
-                                  <Icons.brain className="w-4 h-4 text-rose-500" />
-                                  Top
-                                  {member?.team?.side === TeamSide.TOP && (
-                                    <Icons.check className="w-4 h-4 ml-auto" />
-                                  )}
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  className='gap-x-1 font-semibold'
-                                  onClick={() => onTeamChange(member.id, bottomTeam?.id)}
-                                >
-                                  <Icons.brain className="w-4 h-4 text-blue-500" />
-                                  Bottom
-                                  {member?.team?.side === TeamSide.BOTTOM && (
-                                    <Icons.check className="w-4 h-4 ml-auto" />
-                                  )}
-                                </DropdownMenuItem>
+                                {topTeam?.id && (
+                                  <DropdownMenuItem
+                                    className='gap-x-1 font-semibold'
+                                    onClick={() => onTeamChange(member.id, topTeam.id)}
+                                  >
+                                    <Icons.brain className="w-4 h-4 text-rose-500" />
+                                    Top
+                                    {member?.team?.side === TeamSide.TOP && (
+                                      <Icons.check className="w-4 h-4 ml-auto" />
+                                    )}
+                                  </DropdownMenuItem>
+                                )}
+                                {bottomTeam?.id && (
+                                  <DropdownMenuItem
+                                    className='gap-x-1 font-semibold'
+                                    onClick={() => onTeamChange(member.id, bottomTeam.id)}
+                                  >
+                                    <Icons.brain className="w-4 h-4 text-blue-500" />
+                                    Bottom
+                                    {member?.team?.side === TeamSide.BOTTOM && (
+                                      <Icons.check className="w-4 h-4 ml-auto" />
+                                    )}
+                                  </DropdownMenuItem>
+                                )}
                               </DropdownMenuSubContent>
                             </DropdownMenuPortal>
                           </DropdownMenuSub>

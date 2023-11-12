@@ -22,7 +22,7 @@ export default async function handler(
     if (!user) {
       return res.status(401).json({error: 'Unauthorized'});
     }
-    if (!roomId) {
+    if (!roomId || Array.isArray(roomId)) {
       return res.status(400).json({error: 'Room ID Missing'});
     }
     if (!content) {

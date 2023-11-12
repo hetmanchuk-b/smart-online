@@ -16,12 +16,13 @@ import {Button} from "@/components/ui/button";
 import {Icons} from '@/components/icons';
 import {useRouter} from "next/navigation";
 import qs from "query-string";
+import {isAxiosError} from "@/lib/utils";
 
 export const DeleteMessageModal = () => {
   const {isOpen, onClose, type, data} = useModal();
 
   const isModalOpen = isOpen && type === 'deleteMessage';
-  const {apiUrl, query} = data;
+  const {apiUrl, query = {}} = data ?? {};
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,7 +38,11 @@ export const DeleteMessageModal = () => {
       onClose();
     } catch (error) {
       console.log("[DELETE MESSAGE_ERROR]", error);
-      toast.error('Something went wrong.');
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setIsLoading(false);
     }

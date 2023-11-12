@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {Icons} from "@/components/icons";
+import {isAxiosError} from "@/lib/utils";
 
 interface EditUsernameFormProps {
   currentUsername: string;
@@ -48,7 +49,11 @@ export const EditUsernameForm = ({currentUsername}: EditUsernameFormProps) => {
       onClose();
     } catch (error) {
       console.log("[EDIT USERNAME CLIENT_ERROR]", error);
-      toast.error(`Your username was not updated: ${error?.response?.data}`);
+      if (isAxiosError(error)) {
+        toast.error(`Your username was not updated: ${error?.response?.data}`);
+      } else {
+        toast.error(`Your username was not updated.`);
+      }
     }
   }
 

@@ -22,7 +22,7 @@ import {toast} from "sonner";
 import axios from "axios";
 import {Switch} from "@/components/ui/switch";
 import Link from "next/link";
-import {cn} from "@/lib/utils";
+import {cn, isAxiosError} from "@/lib/utils";
 import {Icons} from '@/components/icons';
 import {useModal} from "@/hooks/use-modal-store";
 import {RoomValidator} from "@/lib/validators/room";
@@ -54,7 +54,7 @@ export const GameRoomForm = ({initialData}: GameRoomFormProps) => {
     } else {
       setFormType('edit');
     }
-  }, [form]);
+  }, [form, initialData]);
 
   const {isSubmitting, isValid} = form.formState;
 
@@ -68,7 +68,11 @@ export const GameRoomForm = ({initialData}: GameRoomFormProps) => {
         onClose();
       } catch (error) {
         console.log("[Create room_ERROR]", error);
-        toast.error(`Something went wrong: ${error?.response?.data}`);
+        if (isAxiosError(error)) {
+          toast.error(`Something went wrong: ${error?.response?.data}`);
+        } else {
+          toast.error('Something went wrong.');
+        }
       }
     } else {
       try {
@@ -78,7 +82,11 @@ export const GameRoomForm = ({initialData}: GameRoomFormProps) => {
         onClose();
       } catch (error) {
         console.log("[Edit room_ERROR]", error);
-        toast.error(`Something went wrong: ${error?.response?.data}`);
+        if (isAxiosError(error)) {
+          toast.error(`Something went wrong: ${error?.response?.data}`);
+        } else {
+          toast.error('Something went wrong.');
+        }
       }
     }
   }

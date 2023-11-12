@@ -1,36 +1,16 @@
 "use client"
 
 import {useState} from "react";
-import {Question, QuestionType, AnswerType} from "@prisma/client";
+import {QuestionType, AnswerType} from "@prisma/client";
 import {QuizWithQuestionsWithAnswers} from "@/types/main";
 import {Button} from "@/components/ui/button";
 import {Icons} from '@/components/icons';
 import {QuestionForm} from "@/components/forms/question-form";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
 import {QUIZ_MAX_QUESTIONS_IN_QUIZ} from "@/lib/const";
 
 interface QuizQuestionsFormProps {
   quiz: QuizWithQuestionsWithAnswers
 }
-
-const emptyQuestion = {
-  text: '',
-  type: QuestionType.NORMAL,
-  reward: 1,
-  order: null,
-  variants: [
-    {
-      text: '',
-      type: AnswerType.RIGHT
-    }
-  ]
-}
-
 
 export const QuizQuestionsForm = ({quiz}: QuizQuestionsFormProps) => {
   const [questionsNumber, setQuestionsNumber] = useState<number>(1);

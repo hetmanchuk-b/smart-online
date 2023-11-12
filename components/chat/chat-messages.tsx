@@ -1,11 +1,10 @@
 "use client"
 
-import {Member, Message} from '@prisma/client';
+import {Member, Message, User} from '@prisma/client';
 import {ChatWelcome} from "@/components/chat/chat-welcome";
 import {useChatQuery} from "@/hooks/use-chat-query";
 import {Icons} from '@/components/icons';
 import {Fragment, useRef, ElementRef} from "react";
-import {User} from "next-auth";
 import {ChatItem} from "@/components/chat/chat-item";
 import {formatDateToLocal} from "@/lib/utils";
 import {useChatSocket} from "@/hooks/use-chat-socket";
@@ -67,7 +66,7 @@ export const ChatMessages = (
     count: data?.pages?.[0]?.items?.length ?? 0,
   });
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return (
       <div className="flex flex-col items-center justify-center flex-1">
         <Icons.spinner className="animate-spin w-7 h-7 text-stone-500 my-4" />

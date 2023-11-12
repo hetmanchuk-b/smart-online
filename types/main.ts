@@ -24,7 +24,7 @@ export type TeamWithMembersWithUsers = Team & {
 }
 
 export type MemberWithUser = Member & {
-  user: User
+  user: User;
 }
 
 export type QuizWithQuestionsWithAnswers = Quiz & {
@@ -45,4 +45,9 @@ export type MessageWithMemberWithProfile = Message & {
   member: Member & {
     user: User;
   }
+}
+
+export type RoomWithCreatorAndMembers = Room & {
+  members: Member[];
+  creator: User;
 }

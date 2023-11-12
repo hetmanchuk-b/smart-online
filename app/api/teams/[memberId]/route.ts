@@ -40,7 +40,7 @@ export async function PATCH(
       }
     });
 
-    if (teamLength?.teamMembers?.length >= 4) {
+    if (teamLength && teamLength?.teamMembers?.length >= 4) {
       return new NextResponse('Team cannot have more than 4 players.', {status: 401});
     }
 

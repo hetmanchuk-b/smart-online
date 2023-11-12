@@ -15,13 +15,14 @@ import {
 import {Button} from "@/components/ui/button";
 import {Icons} from '@/components/icons';
 import {useRouter} from "next/navigation";
+import {isAxiosError} from "@/lib/utils";
 
 export const LeaveRoomModal = () => {
   const {isOpen, onClose, type, data} = useModal();
   const router = useRouter();
 
   const isModalOpen = isOpen && type === 'leaveRoom';
-  const {room} = data;
+  const {room} = data ?? {};
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,6 +37,11 @@ export const LeaveRoomModal = () => {
 
     } catch (error) {
       console.log("[LEAVE ROOM_ERROR]", error);
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setIsLoading(false)
     }

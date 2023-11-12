@@ -21,10 +21,10 @@ export async function PATCH(
       return new NextResponse('Quiz ID is Missing', {status: 400});
     }
 
-    let value: boolean;
-    if (isPublished === 'true') {
+    let value = false;
+    if (isPublished.toLowerCase() === 'true') {
       value = true;
-    } else if (isPublished === 'false') {
+    } else if (isPublished.toLowerCase() === 'false') {
       value = false;
     }
 
@@ -39,7 +39,7 @@ export async function PATCH(
         }
       });
 
-      if (foundQuiz?.questions?.length <= 4) {
+      if (foundQuiz && foundQuiz?.questions?.length <= 4) {
         return new NextResponse(
           'Quiz must include at least 5 questions to be published.',
           {status: 400}

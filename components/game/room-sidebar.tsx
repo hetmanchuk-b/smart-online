@@ -49,6 +49,8 @@ export const RoomSidebar = async ({roomId}: RoomSidebarProps) => {
     }
   });
 
+  if (!room) return redirect('/');
+
   const role = room.members.find((member) => member.user.id === session.user.id)?.role;
 
   return (

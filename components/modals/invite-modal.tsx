@@ -16,6 +16,7 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Icons} from '@/components/icons';
 import {useRouter} from "next/navigation";
+import {isAxiosError} from "@/lib/utils";
 
 export const InviteModal = () => {
   const {onOpen, isOpen, onClose, type, data} = useModal();
@@ -23,7 +24,7 @@ export const InviteModal = () => {
   const router = useRouter();
 
   const isModalOpen = isOpen && type === 'invite';
-  const {room} = data;
+  const {room} = data ?? {};
 
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +39,11 @@ export const InviteModal = () => {
       onOpen('invite', {room: response.data});
     } catch (error) {
       console.log(error);
-      toast.error('Something went wrong. Please, try again later.')
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setIsLoading(false);
     }

@@ -1,7 +1,7 @@
 "use client"
 
 import {useState} from "react";
-import {Room, Member} from '@prisma/client';
+import {Room, Member, User} from '@prisma/client';
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
 import {cn, formatDateToLocal} from "@/lib/utils";
@@ -11,15 +11,13 @@ import {Icons} from '@/components/icons';
 import {Separator} from "@/components/ui/separator";
 import {toast} from "sonner";
 import {useOrigin} from "@/hooks/use-origin";
+import {RoomWithCreatorAndMembers} from "@/types/main";
 
 interface GameItemProps {
-  room: Room & {
-    members: Member
-  }
+  room: RoomWithCreatorAndMembers
 }
 
 export const GameItem = ({room}: GameItemProps) => {
-  // console.log(room)
   const router = useRouter();
   const handleJoinRoom = () => {
     router.push(`/invite-smart/${room?.inviteCode}`);
@@ -37,7 +35,7 @@ export const GameItem = ({room}: GameItemProps) => {
     toast.success('Invite link copied!');
     setTimeout(() => {
       setCopied(false);
-    }, 2000)
+    }, 2000);
   }
 
   return (

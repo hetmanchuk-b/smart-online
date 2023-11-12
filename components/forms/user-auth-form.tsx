@@ -5,6 +5,7 @@ import {useState} from "react";
 import {Button} from "@/components/ui/button";
 import {toast} from "sonner";
 import {Icons} from '@/components/icons';
+import {isAxiosError} from "@/lib/utils";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type: 'Sign In' | 'Sign Up';
@@ -19,7 +20,11 @@ export const UserAuthForm = ({type}: UserAuthFormProps) => {
       await signIn('google');
     } catch (error) {
       console.log(error)
-      toast.error('Something went wrong.');
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setIsLoading(false);
     }

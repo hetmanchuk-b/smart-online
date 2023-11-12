@@ -56,8 +56,8 @@ export default async function handler(
 
     let message = await db.message.findFirst({
       where: {
-        id: messageId,
-        roomId
+        id: messageId as string,
+        roomId: roomId as string,
       },
       include: {
         member: {
@@ -83,7 +83,7 @@ export default async function handler(
     if (req.method === 'DELETE') {
       message = await db.message.update({
         where: {
-          id: messageId,
+          id: messageId as string,
         },
         data: {
           content: 'This message has been deleted.',
@@ -99,7 +99,7 @@ export default async function handler(
       });
     }
 
-    const updateKey = `chat:${roomId}:messages:update`;
+    const updateKey = `chat:${roomId as string}:messages:update`;
 
     res?.socket?.server?.io?.emit(updateKey, message);
     return res.status(200).json(message);

@@ -16,6 +16,7 @@ import {usePathname, useRouter} from "next/navigation";
 import qs from "query-string";
 import {useModal} from "@/hooks/use-modal-store";
 import {Quiz} from '@prisma/client';
+import {isAxiosError} from "@/lib/utils";
 
 interface QuizMenuProps {
   quiz: Quiz;
@@ -26,20 +27,6 @@ export const QuizMenu = ({quiz}: QuizMenuProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
-  const onDelete = async () => {
-    try {
-      setIsLoading(true);
-      await axios.delete(`/api/quiz/${quiz?.id}`);
-
-      toast.success('Quiz has been deleted.');
-      router.refresh();
-    } catch (error) {
-      console.log("[DELETE QUIZ CLIENT_ERROR]", error);
-      toast.error(`Something went wrong: ${error?.response?.data}`);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   const onSetPublished = async (value: boolean) => {
     try {
@@ -62,7 +49,11 @@ export const QuizMenu = ({quiz}: QuizMenuProps) => {
       router.refresh();
     } catch (error) {
       console.log("[PUBLISH QUIZ CLIENT_ERROR]", error);
-      toast.error(`Something went wrong: ${error?.response?.data}`)
+      if (isAxiosError(error)) {
+        toast.error(`Something went wrong: ${error?.response?.data}`);
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -108,7 +99,7 @@ export const QuizMenu = ({quiz}: QuizMenuProps) => {
           <Icons.edit className="w-4 h-4" />
         </DropdownMenuItem>
 
-        {!pathname.includes('/new-quiz') && (
+        {pathname && !pathname.includes('/new-quiz') && (
           <DropdownMenuItem
             onSelect={navigateToQuestions}
             className="cursor-pointer font-medium flex items-center justify-between gap-x-2"

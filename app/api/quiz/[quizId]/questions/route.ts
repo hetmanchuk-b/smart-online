@@ -86,7 +86,7 @@ export async function PATCH(
       }
     });
 
-    if (quizCheck?.questions?.length > QUIZ_MAX_QUESTIONS_IN_QUIZ) {
+    if (quizCheck && quizCheck?.questions?.length > QUIZ_MAX_QUESTIONS_IN_QUIZ) {
       return new NextResponse(
         `Quiz cannot contain more than ${QUIZ_MAX_QUESTIONS_IN_QUIZ} questions`,
         {status: 400}

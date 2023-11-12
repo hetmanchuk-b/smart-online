@@ -10,8 +10,7 @@ import {cn} from "@/lib/utils";
 
 interface FileUploadProps {
   onChange: (url?: string) => void;
-  value: string;
-  endpoint: string;
+  value: string | null;
   disabled: boolean;
 }
 
@@ -19,7 +18,6 @@ export const FileUpload = (
   {
     onChange,
     value,
-    endpoint,
     disabled,
   }: FileUploadProps
 ) => {
@@ -57,7 +55,7 @@ export const FileUpload = (
         container: cn('border-input', disabled && 'cursor-not-allowed opacity-60'),
         button: 'bg-stone-600 ut-uploading:bg-stone-400'
       }}
-      endpoint={!disabled ? endpoint : ''}
+      endpoint={'questionImage'}
       onClientUploadComplete={(res) => {
         onChange(res?.[0].url);
         toast.success(`File ${res?.[0].name} uploaded successfully.`);

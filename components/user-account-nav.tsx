@@ -1,7 +1,7 @@
 "use client"
 
 import {useState} from "react";
-import {User} from "next-auth";
+import {User} from "@prisma/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,14 +19,12 @@ import {useModal} from "@/hooks/use-modal-store";
 import {cn} from "@/lib/utils";
 
 interface UserAccountNavProps {
-  user: Pick<User, 'name' | 'image' | 'email'>
+  user: User;
 }
 
 export const UserAccountNav = ({user}: UserAccountNavProps) => {
   const {onOpen} = useModal();
   const [emailIsVisible, setEmailIsVisible] = useState(false);
-
-
 
   return (
     <DropdownMenu>
@@ -41,7 +39,7 @@ export const UserAccountNav = ({user}: UserAccountNavProps) => {
           <div className="flex flex-col space-y-1 leading-none">
             {user.username && (
               <div className="flex items-center justify-between gap-2">
-                <p className="font-medium w-[160px] truncate" title={user.username}>
+                <p className="font-medium w-[160px] truncate" title={user.username || ''}>
                   {user.username}
                 </p>
                 <ActionTooltip label={'Edit username'} side={'left'} align={'center'}>
@@ -49,7 +47,7 @@ export const UserAccountNav = ({user}: UserAccountNavProps) => {
                     size={'icon'}
                     variant={'ghost'}
                     className="w-8 h-8"
-                    onClick={() => onOpen('editUsername', user.username)}
+                    onClick={() => onOpen('editUsername', {username: user.username ?? undefined})}
                   >
                     <span className="sr-only">Edit user name</span>
                     <Icons.edit className="w-4 h-4" />

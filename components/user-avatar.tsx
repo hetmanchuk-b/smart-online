@@ -16,7 +16,7 @@ export const UserAvatar = ({user, ...props}: UserAvatarProps) => {
           <Image
             fill
             src={user.image}
-            alt={user?.name}
+            alt={user?.name || ''}
             referrerPolicy='no-referrer'
           />
         </div>

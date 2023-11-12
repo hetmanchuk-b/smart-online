@@ -21,6 +21,7 @@ import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {Quiz} from '@prisma/client';
 import {useModal} from "@/hooks/use-modal-store";
+import {isAxiosError} from "@/lib/utils";
 
 type formData = z.infer<typeof QuizValidator>
 
@@ -36,7 +37,7 @@ export const QuizForm = ({initialData}: QuizFormProps) => {
     if (initialData !== null) {
       setFormType('edit')
     }
-  }, [formType]);
+  }, [formType, initialData]);
 
   const router = useRouter();
 
@@ -59,17 +60,25 @@ export const QuizForm = ({initialData}: QuizFormProps) => {
         router.push(`/new-quiz/${response?.data?.id}`);
       } catch (error) {
         console.log("[QUIZ POST CLIENT_ERROR]", error);
-        toast.error(`Something went wrong: ${error?.response?.data}`);
+        if (isAxiosError(error)) {
+          toast.error(`Something went wrong: ${error?.response?.data}`);
+        } else {
+          toast.error('Something went wrong.');
+        }
       }
     } else if (formType === 'edit') {
       try {
-        const response = await axios.patch(`/api/quiz/${initialData.id}`, values);
+        const response = await axios.patch(`/api/quiz/${initialData?.id}`, values);
         toast.success(`Quiz ${response?.data?.title} edited.`);
         onClose();
         router.refresh();
       } catch (error) {
         console.log("[QUIZ EDIT CLIENT_ERROR]", error);
-        toast.error(`Something went wrong: ${error?.response?.data}`);
+        if (isAxiosError(error)) {
+          toast.error(`Something went wrong: ${error?.response?.data}`);
+        } else {
+          toast.error(`Something went wrong.`);
+        }
       }
     }
   }
