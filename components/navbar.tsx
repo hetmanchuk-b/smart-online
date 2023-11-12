@@ -13,7 +13,7 @@ import {db} from "@/lib/db";
 export const Navbar = async () => {
   const session = await getAuthSession();
 
-  const user = await db.user.findUnique({
+  const user = await db.user.findFirst({
     where: {
       id: session?.user?.id
     }
