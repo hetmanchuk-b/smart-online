@@ -8,16 +8,12 @@ import {Separator} from "@/components/ui/separator";
 import {NavbarMenu} from "@/components/navbar-menu";
 import {getAuthSession} from "@/lib/auth";
 import {UserAccountNav} from "@/components/user-account-nav";
-import {db} from "@/lib/db";
+import {User} from "next-auth";
 
 export const Navbar = async () => {
   const session = await getAuthSession();
 
-  const user = await db.user.findFirst({
-    where: {
-      id: session?.user?.id
-    }
-  });
+  const user = session?.user;
 
   return (
     <header className="w-full bg-primary-foreground fixed top-0 z-10 h-[60px] border-b-stone-200 border-b flex items-center px-2">
@@ -37,7 +33,7 @@ export const Navbar = async () => {
         <SupportFlag />
         <Separator orientation={"vertical"} className="bg-foreground w-[1px] h-8" />
         {user ? (
-          <UserAccountNav user={user} />
+          <UserAccountNav user={user as User} />
           ) : (
           <Link className={cn(buttonVariants({size: 'sm'}))} href={'/sign-in'}>
             Sign In

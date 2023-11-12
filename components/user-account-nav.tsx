@@ -1,7 +1,7 @@
 "use client"
 
 import {useState} from "react";
-import {User} from "@prisma/client";
+import {User} from "next-auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
