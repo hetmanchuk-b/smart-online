@@ -1,10 +1,7 @@
 import {getAuthSession} from "@/lib/auth";
 import {redirect} from "next/navigation";
 import {db} from "@/lib/db";
-import {cn} from "@/lib/utils";
-import {buttonVariants} from "@/components/ui/button";
-import {Icons} from "@/components/icons";
-import Link from 'next/link';
+import {QuizesAccordion} from "@/components/quiz/quizes-accordion";
 
 const QuizesPage = async () => {
   const session = await getAuthSession();
@@ -15,6 +12,17 @@ const QuizesPage = async () => {
   const quizes = await db.quiz.findMany({
     where: {
       isPublished: true
+    },
+    include: {
+      questions: {
+        include: {
+          variants: true
+        }
+      },
+      creator: true
+    },
+    orderBy: {
+      createdAt: 'asc'
     }
   });
 
@@ -25,22 +33,9 @@ const QuizesPage = async () => {
           Quizes List ({quizes?.length})
         </h1>
 
-        {quizes?.length === 0 ? (
-          <div className="text-lg font-semibold tracking-wide text-stone-400">
-            There is no quizes yet.
-            <Link
-              href={'/new-quiz'}
-              className={cn(buttonVariants({variant: 'link'}))}
-            >
-              <span className="text-lg">Create</span>
-              <Icons.add className="w-5 h-5 ml-2" />
-            </Link>
-          </div>
-        ) : quizes.map((quiz) => (
-          <div key={quiz.id}>
-            {quiz?.title}
-          </div>
-        ))}
+        <QuizesAccordion
+          quizes={quizes}
+        />
       </div>
     </div>
   )

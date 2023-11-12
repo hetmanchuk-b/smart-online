@@ -37,6 +37,11 @@ export const ChatInput = (
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const {content} = values;
+      if (content.trim().length === 0) {
+        form.reset();
+        return;
+      }
       const url = qs.stringifyUrl({
         url: apiUrl,
         query

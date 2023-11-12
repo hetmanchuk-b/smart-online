@@ -70,7 +70,7 @@ export const QuizesAccordion = ({quizes}: QuizesAccordionProps) => {
               </p>
             ) : (
               <QuestionsAccordion
-                questions={quiz?.questions}
+                questions={quiz.questions}
                 quizId={quiz?.id}
               />
             )}

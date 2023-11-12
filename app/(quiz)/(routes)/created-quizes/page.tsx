@@ -1,19 +1,6 @@
 import {getAuthSession} from "@/lib/auth";
 import {redirect} from "next/navigation";
 import {db} from "@/lib/db";
-import Link from "next/link";
-import {cn} from "@/lib/utils";
-import {buttonVariants} from "@/components/ui/button";
-import {QuestionsAccordion} from "@/components/quiz/questions-accordion";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {ActionTooltip} from "@/components/action-tooltip";
-import {QuizMenu} from "@/components/quiz/quiz-menu";
-import {Icons} from '@/components/icons';
 import {QuizesAccordion} from "@/components/quiz/quizes-accordion";
 
 const CreatedQuizesPage = async () => {

@@ -38,12 +38,12 @@ export const ChatItem = (
   const {onOpen} = useModal();
 
   return (
-    <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
+    <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full overflow-hidden">
       <div className="group flex gap-x-2 items-start w-full">
         <div className="hover:drop-shadow-md transition">
           <UserAvatar user={member.user} className="w-6 h-6"/>
         </div>
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col flex-1 items-start">
           <div className="flex items-center justify-between w-full gap-x-2">
             <div className="flex items-center gap-x-1">
               <p className="font-semibold text-sm text-stone-600">
@@ -59,7 +59,7 @@ export const ChatItem = (
           </div>
           <p
             className={cn(
-              'mt-1 text-stone-800 text-md',
+              'mt-1 text-stone-800 text-md break-words w-full',
               deleted && 'italic text-stone-500 text-xs mt-1'
             )}
           >
@@ -69,7 +69,7 @@ export const ChatItem = (
         </div>
       </div>
       {canDeleteMessage && (
-        <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-stone-50 border rounded-sm">
+        <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 top-1 right-5 bg-stone-50 border rounded-sm">
           <ActionTooltip label={'Delete'} side={'left'} align={'center'}>
             <Icons.trash
               onClick={() => onOpen('deleteMessage', {

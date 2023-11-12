@@ -15,6 +15,8 @@ export const EditUsernameModal = () => {
 
   const isModalOpen = isOpen && type === "editUsername";
 
+  const {username} = data as {username: string};
+
   return (
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent className="bg-white p-0 overflow-hidden">
@@ -23,7 +25,7 @@ export const EditUsernameModal = () => {
             Edit your username
           </DialogTitle>
         </DialogHeader>
-        <EditUsernameForm currentUsername={data as string} />
+        <EditUsernameForm currentUsername={username} />
       </DialogContent>
     </Dialog>
   )
