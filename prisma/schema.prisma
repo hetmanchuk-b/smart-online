@@ -1,0 +1,197 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  username      String?
+  image         String?
+
+  hostings Room[] @relation("CreatedBy")
+  quizes   Quiz[]
+
+  accounts Account[]
+  sessions Session[]
+  members  Member[]
+}
+
+model Room {
+  id         String  @id @default(uuid())
+  title      String
+  isPrivate  Boolean @default(false)
+  inviteCode String  @unique
+  creatorId  String?
+  creator    User?   @relation("CreatedBy", fields: [creatorId], references: [id])
+
+  members  Member[]
+  teams    Team[]
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([creatorId])
+}
+
+enum MemberRole {
+  MODERATOR
+  PLAYER
+  GUEST
+}
+
+enum TeamSide {
+  TOP
+  BOTTOM
+}
+
+model Member {
+  id   String     @id @default(uuid())
+  role MemberRole @default(GUEST)
+
+  userId String
+  user   User    @relation(fields: [userId], references: [id])
+  roomId String?
+  room   Room?   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  teamId String?
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([roomId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+model Team {
+  id    String   @id @default(uuid())
+  name  String
+  side  TeamSide @default(TOP)
+  score Int      @default(0)
+
+  roomId String?
+  room   Room?   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  teamMembers Member[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([roomId])
+}
+
+model Quiz {
+  id          String     @id @default(uuid())
+  title       String     @db.Text
+  topic       String?    @db.Text
+  isPublished Boolean    @default(false)
+  questions   Question[]
+
+  creatorId String?
+  creator   User?   @relation(fields: [creatorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([creatorId])
+}
+
+model Question {
+  id       String       @id @default(uuid())
+  text     String       @db.Text
+  type     QuestionType
+  variants Answer[]
+  reward   Int          @default(1)
+  order    Int?
+  imageUrl String?
+
+  quizId String
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([quizId])
+}
+
+model Answer {
+  id   String     @id @default(uuid())
+  text String     @db.Text
+  type AnswerType
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([questionId])
+}
+
+enum QuestionType {
+  FAST
+  NORMAL
+}
+
+enum AnswerType {
+  RIGHT
+  WRONG
+}
+
+model Message {
+  id      String  @id @default(uuid())
+  content String  @db.Text
+  deleted Boolean @default(false)
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  roomId   String
+  room     Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([roomId])
+  @@index([memberId])
+}
