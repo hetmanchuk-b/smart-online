@@ -1,13 +1,14 @@
 import {getAuthSession} from "@/lib/auth";
 import {redirect} from "next/navigation";
 import {db} from "@/lib/db";
-import {QuizesAccordion} from "@/components/quiz/quizes-accordion";
+import {QuizzesAccordion} from "@/components/quiz/quizzes-accordion";
+import {QuizWithCreatorAndQuestionsWithVariants} from "@/types/main";
 
-const CreatedQuizesPage = async () => {
+const CreatedQuizzesPage = async () => {
   const session = await getAuthSession();
   if (!session?.user) return redirect('/sign-in');
 
-  const quizes = await db.quiz.findMany({
+  const quizzes = await db.quiz.findMany({
     where: {
       creatorId: session.user.id
     },
@@ -28,13 +29,16 @@ const CreatedQuizesPage = async () => {
     <div className="h-full p-2 container">
       <div className="space-y-4">
         <h1 className="text-2xl font-semibold tracking-wide text-stone-800">
-          Your Quizes ({quizes?.length})
+          Your Quizzes ({quizzes?.length})
         </h1>
 
-        <QuizesAccordion quizes={quizes} />
+        <QuizzesAccordion
+          userId={session.user.id}
+          quizzes={quizzes as QuizWithCreatorAndQuestionsWithVariants[]}
+        />
       </div>
     </div>
   )
 }
 
-export default CreatedQuizesPage;
+export default CreatedQuizzesPage;

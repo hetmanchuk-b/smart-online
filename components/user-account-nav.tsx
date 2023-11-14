@@ -28,11 +28,16 @@ export const UserAccountNav = ({user}: UserAccountNavProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <UserAvatar
-          className="w-8 h-8"
-          user={user}
-        />
+      <DropdownMenuTrigger className="focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0">
+        <div className="flex items-center gap-x-2 py-2 px-4 hover:bg-stone-900/10 rounded-md">
+          <div className="text-stone-800 font-semibold">
+            {user.username}
+          </div>
+          <UserAvatar
+            className="w-8 h-8"
+            user={user}
+          />
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className="bg-white">
         <div className="flex items-center justify-start gap-2 p-2">
@@ -94,7 +99,7 @@ export const UserAccountNav = ({user}: UserAccountNavProps) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer font-medium">
-          <Link href='/quizes' className="flex items-center justify-between gap-2">
+          <Link href='/quizzes' className="flex items-center justify-between gap-2">
             Public quizes
             <Icons.fileSearch className="w-4 h-4" />
           </Link>

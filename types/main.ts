@@ -51,3 +51,10 @@ export type RoomWithCreatorAndMembers = Room & {
   members: Member[];
   creator: User;
 }
+
+export type QuizWithCreatorAndQuestionsWithVariants = Quiz & {
+  questions: (Question & {
+    variants: Answer[];
+  })[];
+  creator: User;
+}

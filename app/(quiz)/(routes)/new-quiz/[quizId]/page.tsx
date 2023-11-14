@@ -78,6 +78,7 @@ const QuizIdPage = async ({params}: QuizIdPageProps) => {
             </p>
             <Separator className="w-2/3 bg-slate-200 my-2" />
             <QuestionsAccordion
+              isAuthor={true}
               questions={quiz?.questions}
               quizId={quiz?.id}
             />

@@ -28,12 +28,12 @@ export const QuizAccordionMenu = ({quizId, questionId}: QuizAccordionMenuProps) 
     try {
       setIsLoading(true);
       const url = qs.stringifyUrl({
-        url: `/api/quiz/${quizId}/questions`,
+        url: `/api/quiz/${quizId}/questions/remove`,
         query: {
           questionId
         }
       })
-      await axios.delete(url);
+      await axios.patch(url);
 
       toast.success('Question has been deleted.');
       router.refresh();

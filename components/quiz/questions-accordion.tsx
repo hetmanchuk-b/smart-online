@@ -18,12 +18,14 @@ interface QuestionsAccordionProps {
     variants: Answer[];
   })[];
   quizId: string;
+  isAuthor: boolean;
 }
 
 export const QuestionsAccordion = (
   {
     questions,
-    quizId
+    quizId,
+    isAuthor,
   }: QuestionsAccordionProps
 ) => {
   return (
@@ -74,12 +76,14 @@ export const QuestionsAccordion = (
                 </div>
               ))}
             </div>
-            <div className="flex justify-end">
-              <QuizAccordionMenu
-                quizId={quizId}
-                questionId={question.id}
-              />
-            </div>
+            {isAuthor && (
+              <div className="flex justify-end">
+                <QuizAccordionMenu
+                  quizId={quizId}
+                  questionId={question.id}
+                />
+              </div>
+            )}
           </AccordionContent>
         </AccordionItem>
       ))}

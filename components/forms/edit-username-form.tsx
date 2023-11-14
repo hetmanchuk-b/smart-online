@@ -8,7 +8,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {toast} from "sonner";
 import axios from "axios";
 import {useRouter} from "next/navigation";
-import {Button, buttonVariants} from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,6 +16,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {Icons} from "@/components/icons";
@@ -62,7 +63,7 @@ export const EditUsernameForm = ({currentUsername}: EditUsernameFormProps) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 mt-8 w-full"
+          className="space-y-6 mt-8 w-full"
         >
           <FormField
             name={'name'}
@@ -78,6 +79,9 @@ export const EditUsernameForm = ({currentUsername}: EditUsernameFormProps) => {
                   />
                 </FormControl>
                 <FormMessage />
+                <FormDescription className="text-stone-500">
+                  Username must not contain spaces, use _
+                </FormDescription>
               </FormItem>
             )}
           />

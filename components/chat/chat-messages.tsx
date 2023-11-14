@@ -53,8 +53,8 @@ export const ChatMessages = (
   });
 
   useChatSocket({
-    queryKey,
     addKey,
+    queryKey,
     updateKey
   });
 

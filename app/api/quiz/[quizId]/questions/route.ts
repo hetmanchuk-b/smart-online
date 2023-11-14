@@ -3,46 +3,6 @@ import {NextResponse} from "next/server";
 import {db} from "@/lib/db";
 import {QUIZ_MAX_QUESTION_VARIANTS, QUIZ_MAX_QUESTIONS_IN_QUIZ} from "@/lib/const";
 
-export async function DELETE(
-  req: Request,
-  {params}: {params: {quizId: string}}
-) {
-  try {
-    const session = await getAuthSession();
-    if (!session?.user) {
-      return new NextResponse('Unauthorized', {status: 401});
-    }
-    const {searchParams} = new URL(req.url);
-    const questionId = searchParams.get('questionId');
-    if (!params.quizId) {
-      return new NextResponse('Quiz ID is Missing', {status: 400});
-    }
-
-    if (!questionId) {
-      return new NextResponse('Question ID is Missing', {status: 400});
-    }
-
-    const quiz = await db.quiz.update({
-      where: {
-        id: params.quizId,
-        creatorId: session.user.id,
-      },
-      data: {
-        questions: {
-          delete: {
-            id: questionId
-          }
-        }
-      }
-    });
-
-    return NextResponse.json(quiz);
-  } catch (error) {
-    console.log("[DELETE QUESTION API_ERROR]", error);
-    return new NextResponse('Internal Error', {status: 500});
-  }
-}
-
 export async function PATCH(
   req: Request,
   {params}: {params: {quizId: string}}
