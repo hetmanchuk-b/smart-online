@@ -8,6 +8,7 @@ import {roleIconMap} from "@/lib/role-icons";
 import {cn} from "@/lib/utils";
 import {Icons} from '@/components/icons';
 import {useModal} from "@/hooks/use-modal-store";
+import {Separator} from "@/components/ui/separator";
 
 interface ChatItemProps {
   id: string;
@@ -44,7 +45,7 @@ export const ChatItem = (
           <UserAvatar user={member.user} className="w-6 h-6"/>
         </div>
         <div className="flex flex-col flex-1 items-start">
-          <div className="flex items-center justify-between w-full gap-x-2">
+          <div className="flex items-center justify-between gap-x-2">
             <div className="flex items-center gap-x-1">
               <p className="font-semibold text-sm text-stone-600">
                 {member.user.username}
@@ -53,9 +54,10 @@ export const ChatItem = (
                 {roleIconMap[member.role]}
               </ActionTooltip>
             </div>
-            <span className="text-sm text-stone-500 text-right">
+            <Separator orientation={'vertical'} className="w-1.5 h-1.5 rounded-full bg-stone-500" />
+            <div className="text-sm text-stone-500 text-right">
               {timestamp}
-            </span>
+            </div>
           </div>
           <p
             className={cn(

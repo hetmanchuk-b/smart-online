@@ -36,7 +36,7 @@ export const Navbar = async () => {
           <UserAccountNav user={user as User} />
           ) : (
           <Link className={cn(buttonVariants({size: 'sm'}))} href={'/sign-in'}>
-            Sign In
+            Sign In / Sign Up
           </Link>
         )}
 

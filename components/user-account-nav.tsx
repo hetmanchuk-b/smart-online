@@ -94,13 +94,13 @@ export const UserAccountNav = ({user}: UserAccountNavProps) => {
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer font-medium">
           <Link href='/created-quizzes' className="flex items-center justify-between gap-2">
-            Your quizes
+            Your quizzes
             <Icons.folders className="w-4 h-4" />
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer font-medium">
           <Link href='/quizzes' className="flex items-center justify-between gap-2">
-            Public quizes
+            Public quizzes
             <Icons.fileSearch className="w-4 h-4" />
           </Link>
         </DropdownMenuItem>
