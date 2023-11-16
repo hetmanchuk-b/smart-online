@@ -93,7 +93,7 @@ export const UserAccountNav = ({user}: UserAccountNavProps) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer font-medium">
-          <Link href='/created-quizes' className="flex items-center justify-between gap-2">
+          <Link href='/created-quizzes' className="flex items-center justify-between gap-2">
             Your quizes
             <Icons.folders className="w-4 h-4" />
           </Link>

@@ -5,6 +5,7 @@ import {Separator} from "@/components/ui/separator";
 import {QuizQuestionsForm} from "@/components/forms/quiz-questions-form";
 import {QuestionsAccordion} from "@/components/quiz/questions-accordion";
 import {QuizMenu} from "@/components/quiz/quiz-menu";
+import {QUIZ_MAX_QUESTIONS_IN_QUIZ, QUIZ_MIN_QUESTIONS_IN_QUIZ} from "@/lib/const";
 
 interface QuizIdPageProps {
   params: {
@@ -68,13 +69,13 @@ const QuizIdPage = async ({params}: QuizIdPageProps) => {
         </p>
         <p className="text-sm text-slate-500 font-medium leading-2">
           You can change the reward for difficult questions. By default its 1. <br/>
-          Quiz must have more than 5 questions and less than 26.
+          Quiz should have <strong className="font-bold">{QUIZ_MIN_QUESTIONS_IN_QUIZ} - {QUIZ_MAX_QUESTIONS_IN_QUIZ}</strong> questions.
         </p>
         <Separator className="w-full h-[2px] bg-slate-200 my-2" />
-        {quiz?.questions?.length > 0 && (
+        {quiz?.questions && (
           <>
             <p className="text-slate-700 font-bold leading-none mt-2">
-              This quiz already includes questions:
+              This quiz already includes {quiz?.questions?.length} questions:
             </p>
             <Separator className="w-2/3 bg-slate-200 my-2" />
             <QuestionsAccordion

@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Form,
   FormControl,
@@ -42,12 +42,14 @@ type formData = z.infer<typeof QuestionValidator>
 interface QuestionFormProps {
   questionNumber: number;
   quizId: string;
+  setSavedQuestions: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const QuestionForm = (
   {
     questionNumber,
     quizId,
+    setSavedQuestions,
   }: QuestionFormProps
 ) => {
   const router = useRouter();
@@ -91,6 +93,7 @@ export const QuestionForm = (
 
       router.refresh();
       toast.success(`Question for quiz is saved successfully.`);
+      setSavedQuestions((prev) => prev + 1);
       setIsSaved(true);
     } catch (error) {
       console.log("[QUESTION FORM CLIENT_ERROR]", error);
@@ -136,7 +139,7 @@ export const QuestionForm = (
             <FormItem className="col-span-full">
               <FormLabel>
                 <div className="flex items-center justify-between">
-                  Question #{questionNumber}
+                  New Question #{questionNumber}
                   <div className="flex items-center gap-x-2">
                     <label htmlFor="with_image">
                       Add image

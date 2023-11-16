@@ -1,6 +1,7 @@
 import {NextResponse} from "next/server";
 import {getAuthSession} from "@/lib/auth";
 import {db} from "@/lib/db";
+import {QUIZ_MAX_QUESTIONS_IN_QUIZ, QUIZ_MIN_QUESTIONS_IN_QUIZ} from "@/lib/const";
 
 export async function PATCH(
   req: Request,
@@ -29,7 +30,7 @@ export async function PATCH(
     }
 
     if (value) {
-      const foundQuiz = await db.quiz.findUnique({
+      const foundQuiz = await db.quiz.findFirst({
         where: {
           id: params.quizId,
           creatorId: session.user.id,
@@ -39,9 +40,11 @@ export async function PATCH(
         }
       });
 
-      if (foundQuiz && foundQuiz?.questions?.length <= 4) {
+      if (foundQuiz && foundQuiz.questions
+        && (foundQuiz.questions.length < QUIZ_MIN_QUESTIONS_IN_QUIZ
+          || foundQuiz.questions.length > QUIZ_MAX_QUESTIONS_IN_QUIZ)) {
         return new NextResponse(
-          'Quiz must include at least 5 questions to be published.',
+          `Quiz must include at least ${QUIZ_MIN_QUESTIONS_IN_QUIZ} and less than ${QUIZ_MAX_QUESTIONS_IN_QUIZ} questions to be published.`,
           {status: 400}
         );
       }
