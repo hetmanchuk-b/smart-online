@@ -65,7 +65,7 @@ export const GameItem = ({room}: GameItemProps) => {
       </p>
 
       <div className="flex items-center gap-x-2 ml-auto">
-        <ActionTooltip label={`Click to join ${room.title}`} side={'top'} align={'end'}>
+        <ActionTooltip label={`Join ${room.title}`} side={'top'} align={'end'}>
           <Button
             onClick={handleJoinRoom}
             size={'icon'}
@@ -75,7 +75,7 @@ export const GameItem = ({room}: GameItemProps) => {
             <Icons.planeTakeoff className="w-6 h-6" />
           </Button>
         </ActionTooltip>
-        <ActionTooltip label={`Copy Room Invite Link`} side={'top'} align={'end'}>
+        <ActionTooltip label={`Copy Invite Link`} side={'top'} align={'end'}>
           <Button
             onClick={onCopy}
             size={'icon'}
