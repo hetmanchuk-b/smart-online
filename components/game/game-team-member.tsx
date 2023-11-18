@@ -12,13 +12,13 @@ export const GameTeamMember = ({member, side}: GameTeamMemberProps) => {
   return (
     <div
       className={cn(
-        'flex flex-col items-center gap-y-2 px-2 py-4',
+        'flex flex-col items-center gap-y-2 p-2',
         side === TeamSide.TOP ? 'flex-col-reverse' : 'flex-col'
       )}
     >
       <UserAvatar
         user={member?.user}
-        className="w-28 h-28"
+        className="w-24 h-24"
       />
       <p
         title={member?.user?.username || ''}

@@ -14,7 +14,7 @@ export const GameTeam = ({team}: GameTeamProps) => {
   return (
     <div
       className={cn(
-        'w-full p-1.5 border-4',
+        'w-full p-1 border-2',
         team.side === TeamSide.TOP
           ? 'bg-rose-200/20 border-rose-500'
           : 'bg-blue-200/20 border-blue-500'
@@ -42,8 +42,6 @@ export const GameTeam = ({team}: GameTeamProps) => {
               side={team.side}
             />
           ))}
-
-
         </div>
       </div>
 

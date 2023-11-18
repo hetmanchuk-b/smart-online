@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import {Icons} from '@/components/icons';
-import {SupportFlag} from "@/components/support-flag";
 import {secondaryFont} from "@/lib/fonts";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
+import {SupportFlag} from "@/components/support-flag";
 import {NavbarMenu} from "@/components/navbar-menu";
 import {getAuthSession} from "@/lib/auth";
 import {UserAccountNav} from "@/components/user-account-nav";
@@ -30,8 +30,8 @@ export const Navbar = async () => {
       </div>
 
       <div className="ml-auto space-x-4 flex items-center">
-        <SupportFlag />
-        <Separator orientation={"vertical"} className="bg-foreground w-[1px] h-8" />
+        {/*<SupportFlag />*/}
+        {/*<Separator orientation={"vertical"} className="bg-foreground w-[1px] h-8" />*/}
         {user ? (
           <UserAccountNav user={user as User} />
           ) : (
