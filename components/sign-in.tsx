@@ -1,7 +1,4 @@
 import {Icons} from '@/components/icons';
-import Link from "next/link";
-import {cn} from "@/lib/utils";
-import {buttonVariants} from "@/components/ui/button";
 import {UserAuthForm} from "@/components/forms/user-auth-form";
 
 export const SignIn = () => {
@@ -14,14 +11,6 @@ export const SignIn = () => {
         <p className="text-sm max-w-xs mx-auto balance">By continuing, you are setting up a Smart Teams account</p>
 
         <UserAuthForm type={'Sign In'} />
-
-        {/*<p className="px-8 text-center text-sm text-stone-600">*/}
-        {/*  New to Smart Teams?*/}
-        {/*  <Link*/}
-        {/*    href='/sign-up'*/}
-        {/*    className={cn(buttonVariants({variant: 'link'}))}*/}
-        {/*  >Sign Up</Link>*/}
-        {/*</p>*/}
       </div>
     </div>
   )

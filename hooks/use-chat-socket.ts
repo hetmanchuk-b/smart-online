@@ -10,8 +10,6 @@ type ChatSocketProps = {
   queryKey: string;
 }
 
-
-
 export const useChatSocket = (
   {
     addKey,
