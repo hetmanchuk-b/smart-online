@@ -55,12 +55,18 @@ export const GameRoom = async ({roomId}: GameRoomProps) => {
       <div className="flex flex-col h-full col-start-1 col-end-4">
         <GameTeam
           team={room?.teams[0]}
+          side={room?.teams[0].side}
+          updateKey={'update_top_team'}
+          roomId={room.id}
         />
         <div className="flex-1">
           <QuizSection />
         </div>
         <GameTeam
           team={room?.teams[1]}
+          side={room?.teams[1].side}
+          updateKey={'update_bottom_team'}
+          roomId={room.id}
         />
       </div>
 

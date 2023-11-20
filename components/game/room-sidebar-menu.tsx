@@ -84,13 +84,16 @@ export const RoomSidebarMenu = ({room, role}: RoomSidebarMenuProps) => {
           </>
         )}
         {!isModerator && (
-          <DropdownMenuItem
-            className="w-full rounded-none justify-between text-rose-800 cursor-pointer"
-            onClick={() => onOpen('leaveRoom', {room})}
-          >
-            Leave room
-            <Icons.logout className="w-4 h-4" />
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="w-full rounded-none justify-between text-rose-800 cursor-pointer"
+              onClick={() => onOpen('leaveRoom', {room})}
+            >
+              Leave room
+              <Icons.logout className="w-4 h-4" />
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

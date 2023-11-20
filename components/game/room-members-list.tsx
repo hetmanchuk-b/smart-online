@@ -26,22 +26,31 @@ export const RoomMembersList = (
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`room:${roomId}:user_join`));
     pusherClient.subscribe(toPusherKey(`room:${roomId}:user_leave`));
+    pusherClient.subscribe(toPusherKey(`room:${roomId}:user_kick`));
+    pusherClient.subscribe(toPusherKey(`room:${roomId}:user_role`));
 
     const userJoinHandler = (newMember: MemberWithUserAndTeam) => {
       setAllMembers((prev) => [...prev, newMember])
     }
 
-    const userLeaveHandler = (newMembers: MemberWithUserAndTeam[]) => {
+    const usersUpdateHandler = (newMembers: MemberWithUserAndTeam[]) => {
       setAllMembers(newMembers);
     }
 
     pusherClient.bind('user_join', userJoinHandler);
-    pusherClient.bind('user_leave', userLeaveHandler);
+    pusherClient.bind('user_leave', usersUpdateHandler);
+    pusherClient.bind('user_kick', usersUpdateHandler);
+    pusherClient.bind('user_role', usersUpdateHandler);
 
     return () => {
       pusherClient.unsubscribe(toPusherKey(`room:${roomId}:user_join`));
       pusherClient.unsubscribe(toPusherKey(`room:${roomId}:user_leave`));
+      pusherClient.unsubscribe(toPusherKey(`room:${roomId}:user_kick`));
+      pusherClient.unsubscribe(toPusherKey(`room:${roomId}:user_role`));
       pusherClient.unbind('user_join', userJoinHandler);
+      pusherClient.unbind('user_leave', usersUpdateHandler);
+      pusherClient.unbind('user_kick', usersUpdateHandler);
+      pusherClient.unbind('user_update', usersUpdateHandler);
     }
   }, [roomId]);
 

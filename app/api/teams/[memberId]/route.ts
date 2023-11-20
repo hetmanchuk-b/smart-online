@@ -1,7 +1,9 @@
 import {NextResponse} from "next/server";
 import {getAuthSession} from "@/lib/auth";
 import {db} from "@/lib/db";
-import {MemberRole} from '@prisma/client';
+import {MemberRole, TeamSide} from '@prisma/client';
+import {pusherServer} from "@/lib/pusher";
+import {toPusherKey} from "@/lib/utils";
 
 export async function PATCH(
   req: Request,
@@ -28,7 +30,7 @@ export async function PATCH(
       return new NextResponse('Member ID missing', {status: 400});
     }
 
-    const teamLength = await db.team.findUnique({
+    const team = await db.team.findUnique({
       where: {
         id: teamId,
         room: {
@@ -40,7 +42,7 @@ export async function PATCH(
       }
     });
 
-    if (teamLength && teamLength?.teamMembers?.length >= 4) {
+    if (team && team?.teamMembers?.length >= 4) {
       return new NextResponse('Team cannot have more than 4 players.', {status: 401});
     }
 
@@ -68,6 +70,18 @@ export async function PATCH(
         }
       },
       include: {
+        teams: {
+          include: {
+            teamMembers: {
+              include: {
+                user: true
+              }
+            }
+          },
+          orderBy: {
+            side: 'asc'
+          }
+        },
         members: {
           include: {
             user: true,
@@ -79,6 +93,21 @@ export async function PATCH(
         }
       }
     });
+
+    const updatedTeam = room.teams.find((t) => t.side === team.side);
+    let updateKey: string;
+
+    if (team.side === TeamSide.TOP) {
+      updateKey = 'update_top_team';
+    } else {
+      updateKey = 'update_bottom_team';
+    }
+
+    pusherServer.trigger(
+      toPusherKey(`room:${room.id}:${updateKey}`),
+      updateKey,
+      updatedTeam
+    );
 
     return NextResponse.json(room);
   } catch (error) {

@@ -1,6 +1,8 @@
 import {NextResponse} from "next/server";
 import {getAuthSession} from "@/lib/auth";
 import {db} from "@/lib/db";
+import {pusherServer} from "@/lib/pusher";
+import {toPusherKey} from "@/lib/utils";
 
 export async function DELETE(
   req: Request,
@@ -49,6 +51,12 @@ export async function DELETE(
         }
       }
     });
+
+    pusherServer.trigger(
+      toPusherKey(`room:${room.id}:user_kick`),
+      'user_kick',
+      room.members
+    );
 
     return NextResponse.json(room);
   } catch (error) {
@@ -110,6 +118,12 @@ export async function PATCH(
         }
       }
     });
+
+    pusherServer.trigger(
+      toPusherKey(`room:${room.id}:user_role`),
+      'user_role',
+      room.members
+    );
 
     return NextResponse.json(room);
   } catch (error) {
