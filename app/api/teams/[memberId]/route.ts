@@ -94,10 +94,10 @@ export async function PATCH(
       }
     });
 
-    const updatedTeam = room.teams.find((t) => t.side === team.side);
+    const updatedTeam = room.teams.find((t) => t.side === team?.side);
     let updateKey: string;
 
-    if (team.side === TeamSide.TOP) {
+    if (team?.side === TeamSide.TOP) {
       updateKey = 'update_top_team';
     } else {
       updateKey = 'update_bottom_team';
