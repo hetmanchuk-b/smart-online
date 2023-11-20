@@ -10,6 +10,8 @@ import {ActionTooltip} from "@/components/action-tooltip";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import {UserAvatar} from "@/components/user-avatar";
 import {SocketIndicator} from "@/components/socket-indicator";
+import {RoomMembersList} from "@/components/game/room-members-list";
+import {MemberWithUserAndTeam} from "@/types/main";
 
 interface RoomSidebarProps {
   roomId: string;
@@ -89,27 +91,11 @@ export const RoomSidebar = async ({roomId}: RoomSidebarProps) => {
             ))}
           </div>
           <Separator className="w-2/3 h-[1px] bg-stone-400 my-2 mx-auto" />
-          <div className="flex flex-wrap gap-2 p-2">
-            <p className="text-xs font-bold text-stone-500 uppercase">Members:</p>
-            {room?.members?.map((member) => (
-              <div
-                key={member.id}
-                className={cn(
-                  'font-semibold text-xs flex items-center gap-x-1',
-                  session.user.username === member.user.username && 'underline-offset-4 underline'
-                )}
-              >
-                {member.user.username}
-                <ActionTooltip
-                  label={member.role}
-                  side={'right'}
-                  align={'center'}
-                >
-                  {roleIconMap[member.role]}
-                </ActionTooltip>
-              </div>
-            ))}
-          </div>
+          <RoomMembersList
+            activeMembers={room.members as MemberWithUserAndTeam[]}
+            roomId={room.id}
+            user={session.user}
+          />
         </ScrollArea>
       </div>
 

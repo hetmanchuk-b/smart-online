@@ -27,6 +27,11 @@ export type MemberWithUser = Member & {
   user: User;
 }
 
+export type MemberWithUserAndTeam = Member & {
+  user: User;
+  team: Team;
+}
+
 export type QuizWithQuestionsWithAnswers = Quiz & {
   questions: (Question & {
     variants: Answer[]

@@ -17,7 +17,7 @@ export const QuizSection = ({}: QuizSectionProps) => {
               <span className="font-bold"> Team Top</span>
             </p>
             <p className="text-xl font-bold text-stone-900">
-              Who is Vladimir Putin?
+              Name the most famous huilo of the XXI century?
             </p>
             <Image
               src="/images/wide-test.jpg"

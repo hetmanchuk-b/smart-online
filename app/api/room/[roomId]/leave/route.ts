@@ -1,6 +1,8 @@
 import {NextResponse} from "next/server";
 import {getAuthSession} from "@/lib/auth";
 import {db} from "@/lib/db";
+import {pusherServer} from "@/lib/pusher";
+import {toPusherKey} from "@/lib/utils";
 
 export async function PATCH(
   req: Request,
@@ -34,8 +36,22 @@ export async function PATCH(
             userId: session.user.id
           }
         }
+      },
+      include: {
+        members: {
+          include: {
+            user: true,
+            team: true
+          }
+        }
       }
     });
+
+    pusherServer.trigger(
+      toPusherKey(`room:${room.id}:user_leave`),
+      'user_leave',
+      room.members
+    );
 
     return NextResponse.json(room);
 

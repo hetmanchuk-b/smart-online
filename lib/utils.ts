@@ -42,3 +42,7 @@ export const formatDateToLocal = (
 export function isAxiosError(error: any): error is AxiosError {
   return 'isAxiosError' in error;
 }
+
+export const toPusherKey = (key: string) => {
+  return key.replace(/:/g, '__')
+}

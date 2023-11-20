@@ -2,6 +2,8 @@ import {redirect} from "next/navigation";
 import {db} from "@/lib/db";
 import {getAuthSession} from "@/lib/auth";
 import {MemberRole} from '@prisma/client';
+import {pusherServer} from "@/lib/pusher";
+import {toPusherKey} from "@/lib/utils";
 
 interface InviteCodePageProps {
   params: {
@@ -52,10 +54,39 @@ const InviteCodePage = async ({params}: InviteCodePageProps) => {
           }
         ]
       }
+    },
+    include: {
+      members: {
+        include: {
+          user: true,
+          team: true,
+        },
+        orderBy: {
+          role: 'asc'
+        }
+      },
+      teams: {
+        include: {
+          teamMembers: {
+            include: {
+              user: true
+            }
+          }
+        },
+        orderBy: {
+          side: 'asc'
+        }
+      }
     }
   });
 
   if (room) {
+    const newRoomMember = room.members.find((member) => member.user.id === session.user.id);
+    pusherServer.trigger(
+      toPusherKey(`room:${room.id}:user_join`),
+      'user_join',
+      newRoomMember
+    )
     return redirect(`/room/${room?.id}`);
   }
 
